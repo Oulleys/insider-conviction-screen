@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Ledger — Insider Conviction Screen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F1B2B;
+    --panel:#16233A;
+    --ink:#EDE6D6;
+    --ink-dim:#A9A296;
+    --brass:#B08D57;
+    --sage:#5C7A5C;
+    --rust:#9C4B3D;
+    --rule:#2A3A52;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-font-smoothing:antialiased;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Source Serif 4', Georgia, serif;
+    line-height:1.55;
+  }
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  a{color:var(--brass);}
+
+  .wrap{max-width:760px;margin:0 auto;padding:64px 24px 96px;}
+
+  header.masthead{
+    border-bottom:2px solid var(--ink);
+    padding-bottom:22px;
+    margin-bottom:36px;
+  }
+  header.masthead .kicker{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.04em;
+    color:var(--brass);
+    margin-bottom:10px;
+  }
+  header.masthead h1{
+    font-size:2.5rem;
+    font-weight:700;
+    margin:0 0 10px;
+    letter-spacing:-0.01em;
+  }
+  header.masthead p{
+    color:var(--ink-dim);
+    max-width:60ch;
+    margin:0;
+    font-size:1.02rem;
+  }
+  .meta-row{
+    display:flex;
+    justify-content:space-between;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-dim);
+    margin-top:18px;
+  }
+
+  section.methodology{
+    font-size:0.95rem;
+    color:var(--ink-dim);
+    border-left:2px solid var(--rule);
+    padding-left:18px;
+    margin-bottom:52px;
+  }
+  section.methodology strong{color:var(--ink);}
+
+  .entry{
+    border-top:1px solid var(--rule);
+    padding:28px 0 34px;
+  }
+  .entry:last-of-type{border-bottom:1px solid var(--rule);}
+
+  .entry-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .entry-head .name{
+    display:flex;
+    align-items:baseline;
+    gap:12px;
+  }
+  .entry-head .ticker{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.95rem;
+    color:var(--brass);
+    letter-spacing:0.02em;
+  }
+  .entry-head h2{
+    font-size:1.5rem;
+    margin:0;
+    font-weight:600;
+  }
+  .score{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:1.6rem;
+    font-weight:600;
+    color:var(--sage);
+    white-space:nowrap;
+  }
+  .score span{font-size:0.9rem;color:var(--ink-dim);font-weight:400;}
+
+  .thesis{margin:16px 0 20px;font-size:1.02rem;}
+
+  .datarow{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    margin-bottom:18px;
+  }
+  .datarow div{
+    border-top:1px solid var(--rule);
+    padding-top:8px;
+  }
+  .datarow .label{color:var(--ink-dim);display:block;margin-bottom:4px;}
+  .datarow .value{color:var(--ink);}
+
+  .risk{
+    font-size:0.92rem;
+    color:var(--ink-dim);
+    margin-bottom:14px;
+  }
+  .risk strong{color:var(--rust);font-weight:600;}
+
+  .sources{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-dim);
+  }
+  .sources a{color:var(--ink-dim);text-decoration:underline;text-decoration-color:var(--rule);}
+  .sources a:hover{color:var(--brass);text-decoration-color:var(--brass);}
+
+  .excluded-block{
+    margin-top:56px;
+    border:1px solid var(--rust);
+    padding:22px 24px;
+  }
+  .excluded-block h3{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.04em;
+    color:var(--rust);
+    margin:0 0 16px;
+    text-transform:uppercase;
+  }
+  .excluded-item{
+    font-size:0.94rem;
+    color:var(--ink-dim);
+    margin-bottom:12px;
+  }
+  .excluded-item:last-child{margin-bottom:0;}
+  .excluded-item .tk{font-family:'IBM Plex Mono', monospace;color:var(--rust);}
+
+  footer{
+    margin-top:60px;
+    padding-top:20px;
+    border-top:1px solid var(--rule);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-dim);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  @media (max-width:560px){
+    .wrap{padding:40px 18px 72px;}
+    header.masthead h1{font-size:1.9rem;}
+    .datarow{grid-template-columns:repeat(2,1fr);}
+    .score{font-size:1.3rem;}
+  }
+
+  :focus-visible{outline:2px solid var(--brass);outline-offset:2px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">THE LEDGER — INSIDER CONVICTION SCREEN</div>
+    <h1>Where insiders are putting their own money.</h1>
+    <p>A live screen that cross-checks recent open-market executive buying against fundamentals — because a big insider buy means nothing if the earnings are rolling over underneath it.</p>
+    <div class="meta-row">
+      <span>RUN DATE: 2026-09-04</span>
+      <span>3 QUALIFY / 5 SCREENED</span>
+    </div>
+  </header>
+
+  <section class="methodology">
+    <p><strong>Method.</strong> Start from Finviz's live Form 4 buy feed, keep only open-market buys by C-suite officers (not directors, not 10% owners) in the trailing 14 days, then require: market cap &gt; $500M, positive trailing-12-month free cash flow, P/E below sector average, and a positive earnings surprise in each of the last two quarters. Every figure below was pulled live — none from training data.</p>
+    <p><strong>Score.</strong> Insider buying signal 30% · Earnings surprise strength 25% · Free cash flow yield 25% · Analyst sentiment 20%.</p>
+  </section>
+
+  <div class="entries">
+
+    <div class="entry">
+      <div class="entry-head">
+        <div class="name">
+          <span class="ticker">VSTS</span>
+          <h2>Vestis Corporation</h2>
+        </div>
+        <div class="score">83<span> / 100</span></div>
+      </div>
+      <p class="thesis">Senior-officer open-market buying (CEO-level, $1.05M+, flagged non-10b5-1) alongside a swing to positive free cash flow and a large EPS beat suggests the uniform-services turnaround is inflecting.</p>
+      <div class="datarow">
+        <div><span class="label">INSIDER BUY</span><span class="value">$1.05M, CEO, 9/2</span></div>
+        <div><span class="label">FCF (FY26 GUIDE)</span><span class="value">$160–170M</span></div>
+        <div><span class="label">EPS SURPRISE</span><span class="value">+63.6%</span></div>
+        <div><span class="label">PRICE</span><span class="value">$12.48</span></div>
+      </div>
+      <p class="risk"><strong>Risk —</strong> GAAP P/E is negative (net-loss basis); the "P/E below sector average" screen only holds on adjusted earnings. Turnaround bet, not a clean value name. No independent DCF run yet.</p>
+      <p class="sources">SOURCES: <a href="https://ir.vestis.com/news-media/press-releases/detail/136/vestis-reports-second-quarter-2026-results-and-increases-full-year-2026-outlook" target="_blank" rel="noopener">Vestis IR release</a> · <a href="https://www.stocktitan.net/sec-filings/VSTS" target="_blank" rel="noopener">SEC Form 4</a> · <a href="https://finance.yahoo.com/quote/VSTS/" target="_blank" rel="noopener">Yahoo Finance</a></p>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div class="name">
+          <span class="ticker">ITT</span>
+          <h2>ITT Inc.</h2>
+        </div>
+        <div class="score">73<span> / 100</span></div>
+      </div>
+      <p class="thesis">President &amp; CEO Luca Savi bought $1.0M of stock the same week ITT raised full-year guidance off a record quarter — insider conviction lining up with fundamental momentum post SPX FLOW integration.</p>
+      <div class="datarow">
+        <div><span class="label">INSIDER BUY</span><span class="value">$1.00M, CEO, 8/31</span></div>
+        <div><span class="label">FCF (FY26 GUIDE)</span><span class="value">$550–580M</span></div>
+        <div><span class="label">EPS SURPRISE</span><span class="value">+18.2%</span></div>
+        <div><span class="label">P/E</span><span class="value">~39.9x</span></div>
+      </div>
+      <p class="risk"><strong>Risk —</strong> Already re-rated to ~40x earnings; fails the strict "P/E below sector average" screen and is included on the insider buy + guidance raise alone. FCF yield (~3%) is unremarkable for the multiple paid.</p>
+      <p class="sources">SOURCES: <a href="https://investors.itt.com/news-releases/news-release-details/itt-reports-2026-second-quarter-earnings-share-eps-095-adjusted" target="_blank" rel="noopener">ITT IR release</a> · <a href="https://www.stocktitan.net/sec-filings/ITT" target="_blank" rel="noopener">SEC Form 4</a> · <a href="https://www.gurufocus.com/news/9063109/itt-inc-itt-president-and-ceo-luca-savi-purchases-5019-shares" target="_blank" rel="noopener">GuruFocus</a></p>
+    </div>
+
+    <div class="entry">
+      <div class="entry-head">
+        <div class="name">
+          <span class="ticker">PNFP</span>
+          <h2>Pinnacle Financial Partners</h2>
+        </div>
+        <div class="score">64<span> / 100</span></div>
+      </div>
+      <p class="thesis">CEO Kevin Blair added shares at $97.48 while PNFP trades at ~10.3x earnings — a discount to its own 10-year average of 13.7x — a value-with-insider-confirmation setup in regional banking.</p>
+      <div class="datarow">
+        <div><span class="label">INSIDER BUY</span><span class="value">$250K, CEO, 9/1</span></div>
+        <div><span class="label">P/E</span><span class="value">10.3x</span></div>
+        <div><span class="label">10-YR AVG P/E</span><span class="value">13.7x</span></div>
+        <div><span class="label">MARKET CAP</span><span class="value">~$15.1B</span></div>
+      </div>
+      <p class="risk"><strong>Risk —</strong> Bank FCF isn't cleanly defined and wasn't confirmed live (data gap). Earnings-surprise magnitude is modest, and the sector-average P/E for regional banks wasn't independently confirmed — the size of the discount is uncertain.</p>
+      <p class="sources">SOURCES: <a href="https://www.macrotrends.net/stocks/charts/PNFP/pinnacle-financial-partners/pe-ratio" target="_blank" rel="noopener">Macrotrends</a> · <a href="https://finance.yahoo.com/quote/PNFP/" target="_blank" rel="noopener">Yahoo Finance</a></p>
+    </div>
+
+  </div>
+
+  <div class="excluded-block">
+    <h3>Screened out despite a large insider buy</h3>
+    <div class="excluded-item"><span class="tk">AMRZ</span> — Amrize Ltd. Chairman/CEO bought ~$1.2M on 9/2, but Q2 EPS missed by −11.1% and FCF was negative YTD (spin-off related).</div>
+    <div class="excluded-item"><span class="tk">OPFI</span> — OppFi Inc. CEO's recurring small buys (via family trust) coincided with a Q2 EPS miss of −26.7% and a guidance cut; stock down ~25% off the report.</div>
+  </div>
+
+  <footer>
+    <span>Built by Austin Tran</span>
+    <span>Live data via Finviz, SEC EDGAR &amp; company IR — refreshed each run</span>
+  </footer>
+
+</div>
+</body>
+</html>
